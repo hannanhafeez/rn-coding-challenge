@@ -4,6 +4,14 @@ This project was bootstrapped with [Create React Native Expo App  (Managed)](htt
 
 This project uses [React Navigation](https://reactnavigation.org/), and specifically [Bottom Tab Navigator](https://reactnavigation.org/docs/bottom-tab-navigator) to achieve the hovering bottom tab navigation menu in the given design.
 
+After cloning the repository, navigate to the root folder of the project using a terminal or command prompt and run the following command (I recommend using npm for this specific project).
+
+```
+npm install
+# or
+yarn
+```
+
 Below you'll find information about performing common tasks.
 
 ## Table of Contents
