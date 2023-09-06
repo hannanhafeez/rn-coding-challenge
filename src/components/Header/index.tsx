@@ -1,0 +1,79 @@
+import { flex_1, items_center, justify_between, justify_end, justify_start, row } from "@/constants/common";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+const avatarPic = require("@/assets/pages/profile.png");
+const avatarPic2 = require("@/assets/pages/profile2.png");
+const avatarPic3 = require("@/assets/pages/profile3.png");
+const arrowLeft = require("@/assets/pages/arrow-left.png");
+const addImg = require("@/assets/pages/add.png");
+const notificationImg = require("@/assets/pages/notification.png");
+import Avatar from "@/components/Avatar";
+import IconButton from "@/components/IconButton";
+import { orange_bg } from "@/constants/colors";
+import { noto_sans_Medium } from "@/constants/fonts";
+
+type HeaderProps = {
+	canGoBack?: boolean;
+	onGoBack?: () => void;
+};
+
+export default function Header({ canGoBack = false, onGoBack }: HeaderProps) {
+	return (
+		<View style={[row, items_center, css.container]}>
+			{/* Left Items */}
+			<View style={[flex_1, row, items_center, justify_start, css.minGap]}>
+				{canGoBack && (
+					<IconButton size={48} backgroundColor={"#2B2B2B"}>
+						<Image source={arrowLeft} />
+					</IconButton>
+				)}
+
+				<StackedAvatars />
+
+				<IconButton size={40} backgroundColor={"#2B2B2B"}>
+					<Image source={addImg} style={{ width: 22, aspectRatio: 1 }} />
+				</IconButton>
+			</View>
+
+			{/* Right Items */}
+			<View style={[flex_1, row, items_center, justify_end, css.minGap]}>
+				<IconButton size={40}>
+					<View style={css.badge_bg}>
+						<Text style={css.badge_text}>3</Text>
+					</View>
+					<Image source={notificationImg} />
+				</IconButton>
+
+				<Avatar size={48} title={"L S"} source={avatarPic} />
+			</View>
+		</View>
+	);
+}
+
+const StackedAvatars = () => (
+	<View style={[row, items_center, { gap: -18 }]}>
+		<Avatar size={48} title={"L S"} source={avatarPic3} />
+		<Avatar size={48} title={"L S"} source={avatarPic2} />
+		<Avatar size={48} title={"40+"} fontSize={12} />
+	</View>
+);
+
+const css = StyleSheet.create({
+	container: {
+		paddingHorizontal: 20,
+		gap: 12,
+		minWidth: "100%",
+	},
+	minGap: { gap: 8 },
+	badge_bg: {
+		paddingHorizontal:4, paddingVertical:1,
+		right: 3, top: 5,
+		zIndex: 1,
+		position:'absolute',
+		borderRadius: 100,
+		backgroundColor: orange_bg,
+	},
+	badge_text: {
+		color:'white',
+		fontSize: 11, lineHeight:13, fontFamily: noto_sans_Medium,
+	},
+});

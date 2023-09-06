@@ -1,5 +1,6 @@
 import { primary } from "@/constants/colors";
 import { column, items_center, justify_between, row } from "@/constants/common";
+import HomePage from "@/screens/home";
 import TestPage from "@/screens/test.page";
 import { BottomTabBarProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image, TouchableOpacity, View } from "react-native";
@@ -8,7 +9,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const Tab = createBottomTabNavigator();
 
 const pagesList = [
-	{ name: "Home", component: TestPage, icon: require("@/assets/navigation/home.png") },
+	{ name: "Home", component: HomePage, icon: require("@/assets/navigation/home.png") },
 	{ name: "Search", component: TestPage, icon: require("@/assets/navigation/search.png") },
 	{ name: "Folders", component: TestPage, icon: require("@/assets/navigation/folder.png") },
 	{ name: "Profile", component: TestPage, icon: require("@/assets/navigation/profile.png") },
@@ -53,9 +54,11 @@ function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 				justify_between,
 				items_center,
 				{
-					position:'absolute',
-					bottom, left: 20, right:20,
-					padding: 20,
+					position: "absolute",
+					bottom: Math.max(bottom, 16),
+					left: 20,
+					right: 20,
+					padding: 12,
 					borderRadius: 24,
 					backgroundColor: "black",
 				},
@@ -91,7 +94,8 @@ function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 				};
 
 				return (
-					<TouchableOpacity key={route.key}
+					<TouchableOpacity
+						key={route.key}
 						accessibilityRole="button"
 						accessibilityState={isFocused ? { selected: true } : {}}
 						accessibilityLabel={options.tabBarAccessibilityLabel}

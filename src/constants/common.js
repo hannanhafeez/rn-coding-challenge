@@ -57,6 +57,10 @@ const css = StyleSheet.create({
 		column: {
 			flexDirection: "column",
 		},
+
+		place_center: {
+			justifyContent:'center', alignItems: 'center',
+		}
 	});
 
 module.exports = {
@@ -78,4 +82,5 @@ module.exports = {
 	grow_1: css.grow_1,
 	row: css.row,
 	column: css.column,
+	place_center: css.place_center,
 };
