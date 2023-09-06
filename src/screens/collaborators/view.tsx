@@ -1,11 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { flex_1, items_center, row } from "@/constants/common";
-import { dark_bg, pink_text } from "@/constants/colors";
+import { dark_bg } from "@/constants/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Header from "@/components/Header";
-import { noto_sans_Regular, poppins_Medium, poppins_Regular } from "@/constants/fonts";
+import { poppins_Medium, poppins_Regular } from "@/constants/fonts";
 
 const searchOutlineImg = require("@/assets/pages/search-outlined.png");
 const avatarPic2 = require("@/assets/pages/profile2.png");

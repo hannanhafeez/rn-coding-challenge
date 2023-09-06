@@ -1,9 +1,10 @@
 import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
 import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MaskedView from "@react-native-masked-view/masked-view";
 
-import { flex_1, items_center, justify_between, justify_center, place_center, row } from "@/constants/common";
-import { dark_bg, pink_text, primary } from "@/constants/colors";
+import { flex_1, items_center, justify_between, place_center, row } from "@/constants/common";
+import { dark_bg, pink_text } from "@/constants/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Header from "@/components/Header";
 import { LinearGradient } from "expo-linear-gradient";
@@ -12,7 +13,6 @@ import { noto_sans_Regular, poppins_Medium, poppins_Regular } from "@/constants/
 const searchOutlineImg = require("@/assets/pages/search-outlined.png");
 
 import IconButton from "@/components/IconButton";
-import { useMemo, useState } from "react";
 import UserInfoCard from "./UserInfoCard";
 import { isAndroid } from "@/utils/platform";
 
@@ -30,7 +30,7 @@ const BOTTOM_BAR_HEIGHT = 80;
 export default function HomePageView({ timeText, dayText, categoryList, onSearchPressed }: HomePageViewProps) {
 	const { top, bottom, } = useSafeAreaInsets();
 
-	const [seletedCategory, setSeletedCategory] = useState<string|null>(null);
+	const [seletedCategory, setSeletedCategory] = useState<string | null>(categoryList?.[0].name || null);
 
 	const BOTTOM_CLEARANCE = Math.max(bottom, 0) + BOTTOM_BAR_HEIGHT;
 

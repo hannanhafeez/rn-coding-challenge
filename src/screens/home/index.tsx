@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import type { ParamListBase } from "@react-navigation/native";
 import HomePageView from "./view";
@@ -32,5 +30,6 @@ const categoryList: { name: string; count: number }[] = [
 export default function HomePage({}: BottomTabScreenProps<ParamListBase, string>) {
 	const timeText = dayjs().format("HH:mm");
 	const dayText = dayjs().format("dddd");
+
 	return <HomePageView categoryList={categoryList} timeText={timeText} dayText={dayText} />;
 }

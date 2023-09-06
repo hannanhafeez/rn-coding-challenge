@@ -1,11 +1,11 @@
+import type { FC } from "react";
 import Avatar from "@/components/Avatar";
 import BarChart from "@/components/BarChart";
 import IconButton from "@/components/IconButton";
 import { primary, yellow_text } from "@/constants/colors";
-import { flex_1, flex_wrap, items_center, justify_between, justify_center, justify_start, row } from "@/constants/common";
+import { items_center, justify_between, row } from "@/constants/common";
 import { poppins_Medium, poppins_Regular } from "@/constants/fonts";
 import { isAndroid } from "@/utils/platform";
-import { FC } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const avatarPic2 = require("@/assets/pages/profile2.png");
