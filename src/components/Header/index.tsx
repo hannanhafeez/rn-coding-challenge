@@ -13,12 +13,13 @@ import { noto_sans_Medium } from "@/constants/fonts";
 
 type HeaderProps = {
 	canGoBack?: boolean;
+	hideUsersNumber?: boolean;
 	onGoBack?: () => void;
 };
 
-const BUTTON_BG= "#2B2B2B"
+const BUTTON_BG = "#2B2B2B";
 
-export default function Header({ canGoBack = false, onGoBack }: HeaderProps) {
+export default function Header({ canGoBack = false, onGoBack, hideUsersNumber=false, }: HeaderProps) {
 	return (
 		<View style={[row, items_center, css.container]}>
 			{/* Left Items */}
@@ -29,7 +30,7 @@ export default function Header({ canGoBack = false, onGoBack }: HeaderProps) {
 					</IconButton>
 				)}
 
-				<StackedAvatars />
+				<StackedAvatars hideUsersNumber={hideUsersNumber} />
 
 				<IconButton size={40} backgroundColor={BUTTON_BG}>
 					<Image source={addImg} style={{ width: 22, aspectRatio: 1 }} />
@@ -51,11 +52,11 @@ export default function Header({ canGoBack = false, onGoBack }: HeaderProps) {
 	);
 }
 
-const StackedAvatars = () => (
+const StackedAvatars = ({hideUsersNumber}:{hideUsersNumber?: boolean;}) => (
 	<View style={[row, items_center, { gap: -18 }]}>
 		<Avatar size={52} title={"L S"} source={avatarPic3} />
 		<Avatar size={52} title={"L S"} source={avatarPic2} />
-		<Avatar size={52} title={"40+"} fontSize={12} />
+		{!hideUsersNumber && <Avatar size={52} title={"40+"} fontSize={12} />}
 	</View>
 );
 

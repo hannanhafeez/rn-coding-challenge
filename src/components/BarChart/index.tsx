@@ -49,7 +49,7 @@ const BarChart: FC<BarChartProps> = ({ barData }) => {
 							<View
 								style={{
 									justifyContent: "flex-end",
-									padding: 2,
+									padding: 1,
 									width: 28,
 									height: Math.min(140 - 16 - 8, (136 - 16 - 8) * percentage * 1.2),
 									borderRadius: 10,
@@ -66,7 +66,7 @@ const BarChart: FC<BarChartProps> = ({ barData }) => {
 						</View>
 					);
 				}}
-				ItemSeparatorComponent={() => <View style={{ width: 12 }}></View>}
+				ItemSeparatorComponent={() => <View style={{ width: 10 }}></View>}
 				keyExtractor={(item) => item.label}
 			/>
 		</View>

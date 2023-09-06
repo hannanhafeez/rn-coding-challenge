@@ -1,5 +1,6 @@
 import { primary } from "@/constants/colors";
 import { column, items_center, justify_between, row } from "@/constants/common";
+import CollaboratorsPage from "@/screens/collaborators";
 import HomePage from "@/screens/home";
 import TestPage from "@/screens/test.page";
 import { BottomTabBarProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -12,7 +13,7 @@ const pagesList = [
 	{ name: "Home", component: HomePage, icon: require("@/assets/navigation/home.png") },
 	{ name: "Search", component: TestPage, icon: require("@/assets/navigation/search.png") },
 	{ name: "Folders", component: TestPage, icon: require("@/assets/navigation/folder.png") },
-	{ name: "Profile", component: TestPage, icon: require("@/assets/navigation/profile.png") },
+	{ name: "Collaborators", component: CollaboratorsPage, icon: require("@/assets/navigation/profile.png") },
 	{ name: "Setting", component: TestPage, icon: require("@/assets/navigation/setting.png") },
 ];
 
@@ -20,7 +21,7 @@ const ICON_SIZE = 24;
 
 export default function TabNavigator() {
 	return (
-		<Tab.Navigator initialRouteName={"Home"} tabBar={(props) => <TabBar {...props} />}
+		<Tab.Navigator initialRouteName={"Collaborators"} tabBar={(props) => <TabBar {...props} />}
 			screenOptions={{
 				headerShown: false,
 			}}

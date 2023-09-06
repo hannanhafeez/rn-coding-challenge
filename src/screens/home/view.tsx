@@ -32,7 +32,7 @@ export default function HomePageView({ timeText, dayText, categoryList, onSearch
 
 	const [seletedCategory, setSeletedCategory] = useState<string|null>(null);
 
-	const BOTTOM_CLEARANCE = Math.max(bottom, 20) + BOTTOM_BAR_HEIGHT;
+	const BOTTOM_CLEARANCE = Math.max(bottom, 0) + BOTTOM_BAR_HEIGHT;
 
 	return (
 		<View style={[flex_1, css.container]}>
