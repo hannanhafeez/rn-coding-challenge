@@ -3,6 +3,8 @@
   "compilerOptions": {
 		"strict": true,
 		"jsx": "preserve",
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
 		"allowJs": true,
 		"baseUrl": ".",
 		"paths": {

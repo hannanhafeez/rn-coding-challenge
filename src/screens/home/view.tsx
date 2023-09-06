@@ -1,36 +1,154 @@
-import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import MaskedView from "@react-native-masked-view/masked-view";
 
-import { flex_1, items_center, justify_center } from "@/constants/common";
-import { dark_bg } from "@/constants/colors";
+import { flex_1, items_center, justify_between, justify_center, place_center, row } from "@/constants/common";
+import { dark_bg, pink_text, primary } from "@/constants/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Header from "@/components/Header";
-// const homeImg = require('@/assets/navigation/home.png');
+import { LinearGradient } from "expo-linear-gradient";
+import { noto_sans_Regular, poppins_Medium, poppins_Regular } from "@/constants/fonts";
 
-// ScreenComponentType<ParamListBase, string>;
+const searchOutlineImg = require("@/assets/pages/search-outlined.png");
 
-type HomePageViewProps = {};
+import IconButton from "@/components/IconButton";
+import { useMemo, useState } from "react";
 
-export default function HomePageView({}: HomePageViewProps) {
+export type Category = { name: string; count: number };
+
+type HomePageViewProps = {
+	timeText: string;
+	dayText: string;
+	categoryList?: Category[];
+	onSearchPressed?: () => void;
+};
+
+export default function HomePageView({ timeText, dayText, categoryList, onSearchPressed }: HomePageViewProps) {
 	const { top } = useSafeAreaInsets();
 
-	useEffect(() => {
-		// console.log('lol');
-	}, []);
+	const [seletedCategory, setSeletedCategory] = useState<string|null>(null);
+
 	return (
-		<View style={[flex_1, items_center, justify_center, css.container]}>
-			<View style={[flex_1, {paddingTop: top}]}>
+		<View style={[flex_1, css.container]}>
+			<View style={[{ paddingTop: top + 12, paddingBottom: 8 }]}>
 				<Header />
 			</View>
+
+			<ScrollView style={[flex_1, { marginHorizontal: -20 }]} contentContainerStyle={{ paddingHorizontal: 20 }}>
+				<View style={{ marginVertical: 20, gap: 20 }}>
+					{/* Gradient Text View */}
+					<MaskedView
+						style={{ height: 24, width: "80%" }}
+						maskElement={<Text style={{ fontSize: 14, fontFamily: poppins_Regular }}>Your recent videos</Text>}
+					>
+						<LinearGradient
+							colors={["#F2AC8A", "#8386FF", "#9B74FF"]}
+							start={{ x: 0, y: 1 }}
+							end={{ x: 1, y: 1 }}
+							style={{ flex: 1, height: 24 }}
+						/>
+					</MaskedView>
+
+					{/* Day Time View */}
+					<View style={[row, items_center, justify_between]}>
+						<View style={{ gap: -20 }}>
+							<Text numberOfLines={1} style={css.timeText}>
+								{timeText}
+							</Text>
+							<Text numberOfLines={1} style={css.dayText}>
+								{dayText}
+							</Text>
+						</View>
+						<IconButton onPress={onSearchPressed} size={58} backgroundColor={"#1B1B1B"}>
+							<Image source={searchOutlineImg} />
+						</IconButton>
+					</View>
+
+					{/* Category List View */}
+					{categoryList && (
+						<View style={{ marginHorizontal: -20 }}>
+							<FlatList
+								horizontal
+								data={categoryList}
+								renderItem={({ item: { name, count } }) => {
+									const selected = seletedCategory === name;
+									return (
+										<TouchableOpacity onPress={() => setSeletedCategory((cat) => (cat === name ? null : name))}>
+											<View style={[row, items_center, categoryCss.view, selected && categoryCss.view_active]}>
+												<Text style={[categoryCss.text, selected && { color: "white" }]}>{name}</Text>
+												<View
+													style={[
+														place_center,
+														categoryCss.badge_view,
+														selected && { backgroundColor: "#8150FF" },
+													]}
+												>
+													<Text style={[categoryCss.badge_text, selected && { color: "white" }]}>{count}</Text>
+												</View>
+											</View>
+										</TouchableOpacity>
+									);
+								}}
+								keyExtractor={(item) => item.name}
+								ListHeaderComponent={() => <View style={{ width: 20 }} />}
+								ListFooterComponent={() => <View style={{ width: 20 }} />}
+								ItemSeparatorComponent={() => <View style={{ width: 12 }} />}
+							/>
+						</View>
+					)}
+
+					{/* <View style={{ height: 800, backgroundColor: "red" }}></View> */}
+				</View>
+			</ScrollView>
 
 			<StatusBar style="light" />
 		</View>
 	);
 }
 
+const UNSELECTED_COLOR = "#6D6D6D";
 const css = StyleSheet.create({
 	container: {
+		paddingHorizontal: 20,
 		backgroundColor: dark_bg,
+	},
+	timeText: {
+		fontSize: 60,
+		lineHeight: 72,
+		fontFamily: poppins_Medium,
+		color: "white",
+	},
+	dayText: {
+		fontSize: 42,
+		fontFamily: poppins_Regular,
+		color: pink_text,
+	},
+});
+
+const categoryCss = StyleSheet.create({
+	view: {
+		borderColor: UNSELECTED_COLOR,
+		borderWidth: 1,
+		borderRadius: 25,
+		gap: 8,
+		padding: 16,
+	},
+	view_active: { backgroundColor: "#6B32FF", borderColor: "transparent" },
+	text: {
+		color: UNSELECTED_COLOR,
+		fontSize: 16,
+		fontFamily: poppins_Regular,
+	},
+	badge_view: {
+		backgroundColor: "#3D3D3D",
+		borderRadius: 100,
+		paddingHorizontal: 4,
+		paddingVertical: 2,
+	},
+	badge_text: {
+		color: "#CBCBCB",
+		fontSize: 12,
+		lineHeight: 16,
+		fontFamily: noto_sans_Regular,
 	},
 });

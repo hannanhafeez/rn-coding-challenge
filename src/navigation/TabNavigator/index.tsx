@@ -44,6 +44,8 @@ export default function TabNavigator() {
 	);
 }
 
+/* Black Tab Bar - Start*/
+
 const DOT_SIZE = 7;
 function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 	const { bottom } = useSafeAreaInsets();
@@ -116,3 +118,5 @@ function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 		</View>
 	);
 }
+
+/* Black Tab Bar - End*/

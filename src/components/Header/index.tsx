@@ -16,20 +16,22 @@ type HeaderProps = {
 	onGoBack?: () => void;
 };
 
+const BUTTON_BG= "#2B2B2B"
+
 export default function Header({ canGoBack = false, onGoBack }: HeaderProps) {
 	return (
 		<View style={[row, items_center, css.container]}>
 			{/* Left Items */}
 			<View style={[flex_1, row, items_center, justify_start, css.minGap]}>
 				{canGoBack && (
-					<IconButton size={48} backgroundColor={"#2B2B2B"}>
+					<IconButton size={48} backgroundColor={BUTTON_BG}>
 						<Image source={arrowLeft} />
 					</IconButton>
 				)}
 
 				<StackedAvatars />
 
-				<IconButton size={40} backgroundColor={"#2B2B2B"}>
+				<IconButton size={40} backgroundColor={BUTTON_BG}>
 					<Image source={addImg} style={{ width: 22, aspectRatio: 1 }} />
 				</IconButton>
 			</View>
@@ -59,21 +61,25 @@ const StackedAvatars = () => (
 
 const css = StyleSheet.create({
 	container: {
-		paddingHorizontal: 20,
+		// paddingHorizontal: 20,
 		gap: 12,
 		minWidth: "100%",
 	},
 	minGap: { gap: 8 },
 	badge_bg: {
-		paddingHorizontal:4, paddingVertical:1,
-		right: 3, top: 5,
+		paddingHorizontal: 4,
+		paddingVertical: 1,
+		right: 3,
+		top: 5,
 		zIndex: 1,
-		position:'absolute',
+		position: "absolute",
 		borderRadius: 100,
 		backgroundColor: orange_bg,
 	},
 	badge_text: {
-		color:'white',
-		fontSize: 11, lineHeight:13, fontFamily: noto_sans_Medium,
+		color: "white",
+		fontSize: 11,
+		lineHeight: 13,
+		fontFamily: noto_sans_Medium,
 	},
 });
