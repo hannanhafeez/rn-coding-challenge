@@ -12,7 +12,7 @@ export type IconButtonProps = {
 
 const IconButton:FC<IconButtonProps> = ({ onPress, backgroundColor=dark_bg, size= 32, children }) => {
 	return (
-		<TouchableOpacity activeOpacity={0.6} onPress={onPress}>
+		<TouchableOpacity activeOpacity={0.5} onPress={onPress}>
 			<View style={[place_center, { backgroundColor, width: size, height: size, borderRadius: size/2 }]}>
 				{children}
 			</View>

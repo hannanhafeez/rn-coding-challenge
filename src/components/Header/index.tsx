@@ -38,14 +38,14 @@ export default function Header({ canGoBack = false, onGoBack }: HeaderProps) {
 
 			{/* Right Items */}
 			<View style={[flex_1, row, items_center, justify_end, css.minGap]}>
-				<IconButton size={40}>
+				<IconButton size={44}>
 					<View style={css.badge_bg}>
 						<Text style={css.badge_text}>3</Text>
 					</View>
 					<Image source={notificationImg} />
 				</IconButton>
 
-				<Avatar size={48} title={"L S"} source={avatarPic} />
+				<Avatar size={52} title={"L S"} source={avatarPic} />
 			</View>
 		</View>
 	);
@@ -53,9 +53,9 @@ export default function Header({ canGoBack = false, onGoBack }: HeaderProps) {
 
 const StackedAvatars = () => (
 	<View style={[row, items_center, { gap: -18 }]}>
-		<Avatar size={48} title={"L S"} source={avatarPic3} />
-		<Avatar size={48} title={"L S"} source={avatarPic2} />
-		<Avatar size={48} title={"40+"} fontSize={12} />
+		<Avatar size={52} title={"L S"} source={avatarPic3} />
+		<Avatar size={52} title={"L S"} source={avatarPic2} />
+		<Avatar size={52} title={"40+"} fontSize={12} />
 	</View>
 );
 
@@ -65,12 +65,12 @@ const css = StyleSheet.create({
 		gap: 12,
 		minWidth: "100%",
 	},
-	minGap: { gap: 8 },
+	minGap: { gap: 6 },
 	badge_bg: {
 		paddingHorizontal: 4,
 		paddingVertical: 1,
-		right: 3,
-		top: 5,
+		right: 5,
+		top: 6,
 		zIndex: 1,
 		position: "absolute",
 		borderRadius: 100,

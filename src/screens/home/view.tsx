@@ -13,6 +13,8 @@ const searchOutlineImg = require("@/assets/pages/search-outlined.png");
 
 import IconButton from "@/components/IconButton";
 import { useMemo, useState } from "react";
+import UserInfoCard from "./UserInfoCard";
+import { isAndroid } from "@/utils/platform";
 
 export type Category = { name: string; count: number };
 
@@ -23,10 +25,14 @@ type HomePageViewProps = {
 	onSearchPressed?: () => void;
 };
 
+const BOTTOM_BAR_HEIGHT = 80;
+
 export default function HomePageView({ timeText, dayText, categoryList, onSearchPressed }: HomePageViewProps) {
-	const { top } = useSafeAreaInsets();
+	const { top, bottom, } = useSafeAreaInsets();
 
 	const [seletedCategory, setSeletedCategory] = useState<string|null>(null);
+
+	const BOTTOM_CLEARANCE = Math.max(bottom, 20) + BOTTOM_BAR_HEIGHT;
 
 	return (
 		<View style={[flex_1, css.container]}>
@@ -34,7 +40,10 @@ export default function HomePageView({ timeText, dayText, categoryList, onSearch
 				<Header />
 			</View>
 
-			<ScrollView style={[flex_1, { marginHorizontal: -20 }]} contentContainerStyle={{ paddingHorizontal: 20 }}>
+			<ScrollView
+				style={[flex_1, { marginHorizontal: -20 }]}
+				contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: BOTTOM_CLEARANCE }}
+			>
 				<View style={{ marginVertical: 20, gap: 20 }}>
 					{/* Gradient Text View */}
 					<MaskedView
@@ -98,6 +107,7 @@ export default function HomePageView({ timeText, dayText, categoryList, onSearch
 					)}
 
 					{/* <View style={{ height: 800, backgroundColor: "red" }}></View> */}
+					<UserInfoCard />
 				</View>
 			</ScrollView>
 
@@ -137,13 +147,15 @@ const categoryCss = StyleSheet.create({
 	text: {
 		color: UNSELECTED_COLOR,
 		fontSize: 16,
+		lineHeight: isAndroid ? 22 : undefined,
 		fontFamily: poppins_Regular,
 	},
 	badge_view: {
 		backgroundColor: "#3D3D3D",
-		borderRadius: 100,
+		borderRadius: 6,
 		paddingHorizontal: 4,
 		paddingVertical: 2,
+		minWidth: 18,
 	},
 	badge_text: {
 		color: "#CBCBCB",

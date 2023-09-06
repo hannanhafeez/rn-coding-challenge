@@ -51,6 +51,9 @@ const css = StyleSheet.create({
 		grow_1: {
 			flexGrow: 1,
 		},
+		flex_wrap: {
+			flexWrap: 'wrap',
+		},
 		row: {
 			flexDirection: "row",
 		},
@@ -83,4 +86,5 @@ module.exports = {
 	row: css.row,
 	column: css.column,
 	place_center: css.place_center,
+	flex_wrap: css.flex_wrap,
 };
