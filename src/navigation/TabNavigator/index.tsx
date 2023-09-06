@@ -21,7 +21,9 @@ const ICON_SIZE = 24;
 
 export default function TabNavigator() {
 	return (
-		<Tab.Navigator initialRouteName={"Collaborators"} tabBar={(props) => <TabBar {...props} />}
+		<Tab.Navigator
+			initialRouteName={"Home"}
+			tabBar={(props) => <TabBar {...props} />}
 			screenOptions={{
 				headerShown: false,
 			}}
