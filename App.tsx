@@ -1,5 +1,6 @@
-import * as React from "react";
-import TestPage from "@/screens/test.page";
+import "react-native-gesture-handler";
+import React from "react";
+// import TestPage from "@/screens/test.page";
 import { NavigationContainer } from "@react-navigation/native";
 
 import AppLoading from "expo-app-loading";

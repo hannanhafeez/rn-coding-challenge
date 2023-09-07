@@ -23,12 +23,13 @@ type HomePageViewProps = {
 	dayText: string;
 	categoryList?: Category[];
 	onSearchPressed?: () => void;
+	onShowProjectDetail?: (id?: string) => void;
 };
 
 const BOTTOM_BAR_HEIGHT = 80;
 
-export default function HomePageView({ timeText, dayText, categoryList, onSearchPressed }: HomePageViewProps) {
-	const { top, bottom, } = useSafeAreaInsets();
+export default function HomePageView({ timeText, dayText, categoryList, onSearchPressed, onShowProjectDetail }: HomePageViewProps) {
+	const { top, bottom } = useSafeAreaInsets();
 
 	const [seletedCategory, setSeletedCategory] = useState<string | null>(categoryList?.[0].name || null);
 
@@ -107,7 +108,7 @@ export default function HomePageView({ timeText, dayText, categoryList, onSearch
 					)}
 
 					{/* <View style={{ height: 800, backgroundColor: "red" }}></View> */}
-					<UserInfoCard />
+					<UserInfoCard onShowProjectDetail={onShowProjectDetail} />
 				</View>
 			</ScrollView>
 

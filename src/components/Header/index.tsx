@@ -25,7 +25,7 @@ export default function Header({ canGoBack = false, onGoBack, hideUsersNumber=fa
 			{/* Left Items */}
 			<View style={[flex_1, row, items_center, justify_start, css.minGap]}>
 				{canGoBack && (
-					<IconButton size={48} backgroundColor={BUTTON_BG}>
+					<IconButton onPress={onGoBack} size={48} backgroundColor={BUTTON_BG}>
 						<Image source={arrowLeft} />
 					</IconButton>
 				)}

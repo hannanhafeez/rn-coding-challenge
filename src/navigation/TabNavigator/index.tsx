@@ -4,13 +4,15 @@ import CollaboratorsPage from "@/screens/collaborators";
 import HomePage from "@/screens/home";
 import TestPage from "@/screens/test.page";
 import { BottomTabBarProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image, TouchableOpacity, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Animated, Easing, Image, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import HomeStack from "@/navigation/HomeStackNavigator";
 
 const Tab = createBottomTabNavigator();
 
 const pagesList = [
-	{ name: "Home", component: HomePage, icon: require("@/assets/navigation/home.png") },
+	{ name: "Home Stack", component: HomeStack, icon: require("@/assets/navigation/home.png") },
 	{ name: "Search", component: TestPage, icon: require("@/assets/navigation/search.png") },
 	{ name: "Folders", component: TestPage, icon: require("@/assets/navigation/folder.png") },
 	{ name: "Collaborators", component: CollaboratorsPage, icon: require("@/assets/navigation/profile.png") },
@@ -49,9 +51,9 @@ export default function TabNavigator() {
 
 /* Black Tab Bar - Start*/
 
-const DOT_SIZE = 7;
 function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 	const { bottom } = useSafeAreaInsets();
+
 	return (
 		<View
 			style={[
@@ -109,17 +111,66 @@ function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 						onLongPress={onLongPress}
 						style={[items_center, { padding: 8, gap: 8 }]}
 					>
-						{/* {typeof label === "string" && <Text style={{ color: isFocused ? "#673ab7" : "#222" }}>{label}</Text>} */}
-						{Icon?.({ color: "white", focused: isFocused, size: 24 })}
-
-						{isFocused && (
-							<View style={{ width: DOT_SIZE, height: DOT_SIZE, borderRadius: DOT_SIZE / 2, backgroundColor: primary }} />
-						)}
+						<IconWithDot isFocused={isFocused} index={state.index} Icon={Icon} />
 					</TouchableOpacity>
 				);
 			})}
 		</View>
 	);
 }
+
+type IconType = (props: { focused: boolean; color: string; size: number }) => React.ReactNode;
+const DOT_SIZE = 7;
+const ANIMATION_DURATION = 250; // in milliseconds
+
+const IconWithDot = ({ isFocused, index, Icon }: { isFocused: boolean; index: number; Icon?: IconType }) => {
+	const animatedScale = useRef(new Animated.Value(0)).current;
+	const animatedPosition = useRef(new Animated.Value(DOT_SIZE)).current;
+
+	const animateScaleTo = (toValue: 0 | 1) =>
+		Animated.timing(animatedScale, {
+			toValue: toValue,
+			easing: Easing.ease,
+			duration: ANIMATION_DURATION,
+			useNativeDriver: true,
+		});
+	const animatePositionTo = (toValue: number) =>
+		Animated.timing(animatedPosition, {
+			toValue: toValue,
+			easing: Easing.ease,
+			duration: ANIMATION_DURATION,
+			useNativeDriver: true,
+		});
+
+	useEffect(() => {
+		if (isFocused) {
+			Animated.parallel([animatePositionTo(0), animateScaleTo(1)]).start();
+			// animateScaleTo(1);
+		} else {
+			Animated.parallel([animatePositionTo(DOT_SIZE), animateScaleTo(0)]).start();
+		}
+	}, [index]);
+
+	return (
+		<>
+			<Animated.View
+				style={{
+					transform: [{ translateY: animatedPosition }],
+				}}
+			>
+				{Icon?.({ color: "white", focused: isFocused, size: 24 })}
+			</Animated.View>
+			<Animated.View
+				style={{
+					height: DOT_SIZE,
+					aspectRatio: 1,
+					borderRadius: DOT_SIZE / 2,
+					backgroundColor: primary,
+					transform: [{ scale: animatedScale }],
+				}}
+			/>
+		</>
+	);
+};
 
 /* Black Tab Bar - End*/

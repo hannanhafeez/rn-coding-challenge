@@ -3,7 +3,7 @@ import Avatar from "@/components/Avatar";
 import BarChart from "@/components/BarChart";
 import IconButton from "@/components/IconButton";
 import { primary, yellow_text } from "@/constants/colors";
-import { items_center, justify_between, row } from "@/constants/common";
+import { items_center, justify_between, place_center, row } from "@/constants/common";
 import { poppins_Medium, poppins_Regular } from "@/constants/fonts";
 import { isAndroid } from "@/utils/platform";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -16,12 +16,16 @@ const moreImg = require("@/assets/pages/more.png");
 const userImg = require("@/assets/pages/user.png");
 const messageImg = require("@/assets/pages/message-text.png");
 const calendarImg = require("@/assets/pages/calendar.png");
+const arrowRightUpImg = require("@/assets/pages/arrow-right-up.png");
 
 const barData = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((label)=>({label, percentage: Math.min(0.3 + Math.random(), 0.9)}))
+const whiteBtnSize = 58;
 
-export type UserInfoCardProps = {};
+export type UserInfoCardProps = {
+	onShowProjectDetail?: (id?: string) => void;
+};
 
-const UserInfoCard: FC<UserInfoCardProps> = ({}) => {
+const UserInfoCard: FC<UserInfoCardProps> = ({ onShowProjectDetail }) => {
 	return (
 		<View style={css.cardContainer}>
 			<View style={[row, items_center, justify_between]}>
@@ -49,7 +53,31 @@ const UserInfoCard: FC<UserInfoCardProps> = ({}) => {
 			</View>
 
 			<View style={{ gap: 24 }}>
-				<BarChart barData={barData} />
+				<View>
+					<View
+						style={{
+							position: "absolute",
+							// padding: 8,
+							// backgroundColor: dark_bg,
+							zIndex: 1,
+							top: (140 - whiteBtnSize) / 2,
+							right: -whiteBtnSize / 3,
+							borderRadius: 100,
+						}}
+					>
+						<TouchableOpacity
+							onPress={()=>onShowProjectDetail?.()}
+							style={[
+								place_center,
+								{ height: whiteBtnSize, width: whiteBtnSize, borderRadius: whiteBtnSize / 2, backgroundColor: "white" },
+								{shadowColor: 'black', shadowOffset:{height:0, width:0}, shadowRadius: 16, shadowOpacity: 0.3}
+							]}
+						>
+							<Image source={arrowRightUpImg} />
+						</TouchableOpacity>
+					</View>
+					<BarChart barData={barData} />
+				</View>
 
 				{/* Last Row */}
 				<View style={[row, items_center, justify_between, { gap: 8 }]}>

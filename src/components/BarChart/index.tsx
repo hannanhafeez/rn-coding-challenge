@@ -6,8 +6,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 // import { dark_bg } from "@/constants/colors";
 
-const arrowRightUpImg = require("@/assets/pages/arrow-right-up.png");
-
 export type BarData = {
 	label: string;
 	percentage: number;
@@ -15,31 +13,12 @@ export type BarData = {
 
 export type BarChartProps = {
 	barData: BarData[];
+	barWidth?: number
 };
 
-const BarChart: FC<BarChartProps> = ({ barData }) => {
+const BarChart: FC<BarChartProps> = ({ barData, barWidth=28}) => {
 	return (
 		<View style={{ height: 140 }}>
-			<View
-				style={{
-					position: "absolute",
-					// padding: 8,
-					// backgroundColor: dark_bg,
-					zIndex: 1,
-					top: (140 - whiteBtnSize) / 2,
-					right: -whiteBtnSize / 3,
-					borderRadius: 100,
-				}}
-			>
-				<TouchableOpacity
-					style={[
-						place_center,
-						{ height: whiteBtnSize, width: whiteBtnSize, borderRadius: whiteBtnSize / 2, backgroundColor: "white" },
-					]}
-				>
-					<Image source={arrowRightUpImg} />
-				</TouchableOpacity>
-			</View>
 			<FlatList
 				horizontal
 				data={barData}
@@ -50,7 +29,7 @@ const BarChart: FC<BarChartProps> = ({ barData }) => {
 								style={{
 									justifyContent: "flex-end",
 									padding: 1,
-									width: 28,
+									width: Math.max(28, barWidth),
 									height: Math.min(140 - 16 - 8, (136 - 16 - 8) * percentage * 1.2),
 									borderRadius: 10,
 									backgroundColor: "#6441BF",
@@ -75,7 +54,6 @@ const BarChart: FC<BarChartProps> = ({ barData }) => {
 
 export default BarChart;
 
-const whiteBtnSize = 58;
 const css = StyleSheet.create({
 	label: {
 		fontFamily: poppins_Regular,
