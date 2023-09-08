@@ -82,7 +82,7 @@ export default function HomePageView({
 					</View>
 
 					{categoryListLoading ? (
-						<ActivityIndicator size={"small"} color={primary} />
+						<ActivityIndicator size={"large"} color={primary} />
 					) : (
 						<>
 							{/* Category List View */}

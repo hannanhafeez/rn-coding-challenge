@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 type CollaboratorsData = { id: string; name: string; email: string };
 
-export const dummyData = Array.from({ length: 8 }, (_, num) => ({ id: `esther-howard-${num}`, name: "Esther Howard", email: "esther@gmail.com" }));
+export const dummyData = Array.from({ length: 4 }, (_, num) => ({ id: `esther-howard-${num}`, name: "Esther Howard", email: "esther@gmail.com" }));
 
 const getCollaborator = async () => {
 	await delay(3000);
