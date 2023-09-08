@@ -13,7 +13,7 @@ import { noto_sans_Regular, poppins_Medium, poppins_Regular } from "@/constants/
 const searchOutlineImg = require("@/assets/pages/search-outlined.png");
 
 import IconButton from "@/components/IconButton";
-import UserInfoCard from "./UserInfoCard";
+import UserInfoCard from "../../components/UserInfoCard";
 import { isAndroid } from "@/utils/platform";
 
 export type Category = { name: string; count: number };
@@ -33,7 +33,7 @@ export default function HomePageView({ timeText, dayText, categoryList, onSearch
 
 	const [seletedCategory, setSeletedCategory] = useState<string | null>(categoryList?.[0].name || null);
 
-	const BOTTOM_CLEARANCE = Math.max(bottom, 0) + BOTTOM_BAR_HEIGHT;
+	const BOTTOM_CLEARANCE = Math.max(bottom, 10) + BOTTOM_BAR_HEIGHT;
 
 	return (
 		<View style={[flex_1, css.container]}>

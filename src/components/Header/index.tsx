@@ -39,14 +39,14 @@ export default function Header({ canGoBack = false, onGoBack, hideUsersNumber=fa
 
 			{/* Right Items */}
 			<View style={[flex_1, row, items_center, justify_end, css.minGap]}>
-				<IconButton size={44}>
+				<IconButton size={44} backgroundColor={'transparent'}>
 					<View style={css.badge_bg}>
 						<Text style={css.badge_text}>3</Text>
 					</View>
 					<Image source={notificationImg} />
 				</IconButton>
-
-				<Avatar size={52} title={"L S"} source={avatarPic} />
+				<View />
+				<Avatar size={48} title={"L S"} source={avatarPic} borderWidth={0}/>
 			</View>
 		</View>
 	);

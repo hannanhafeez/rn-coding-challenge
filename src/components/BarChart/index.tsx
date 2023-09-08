@@ -13,10 +13,11 @@ export type BarData = {
 
 export type BarChartProps = {
 	barData: BarData[];
-	barWidth?: number
+	barWidth?: number,
+	barDistance?:number,
 };
 
-const BarChart: FC<BarChartProps> = ({ barData, barWidth=28}) => {
+const BarChart: FC<BarChartProps> = ({ barData, barWidth = 28, barDistance =10}) => {
 	return (
 		<View style={{ height: 140 }}>
 			<FlatList
@@ -45,7 +46,7 @@ const BarChart: FC<BarChartProps> = ({ barData, barWidth=28}) => {
 						</View>
 					);
 				}}
-				ItemSeparatorComponent={() => <View style={{ width: 10 }}></View>}
+				ItemSeparatorComponent={() => <View style={{ width: barDistance }}></View>}
 				keyExtractor={(item) => item.label}
 			/>
 		</View>

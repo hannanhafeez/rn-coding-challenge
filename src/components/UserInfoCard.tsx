@@ -1,4 +1,6 @@
 import type { FC } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
 import Avatar from "@/components/Avatar";
 import BarChart from "@/components/BarChart";
 import IconButton from "@/components/IconButton";
@@ -6,7 +8,6 @@ import { primary, yellow_text } from "@/constants/colors";
 import { items_center, justify_between, place_center, row } from "@/constants/common";
 import { poppins_Medium, poppins_Regular } from "@/constants/fonts";
 import { isAndroid } from "@/utils/platform";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const avatarPic2 = require("@/assets/pages/profile2.png");
 const avatarPic3 = require("@/assets/pages/profile3.png");
@@ -27,7 +28,7 @@ export type UserInfoCardProps = {
 
 const UserInfoCard: FC<UserInfoCardProps> = ({ onShowProjectDetail }) => {
 	return (
-		<View style={css.cardContainer}>
+		<View style={cardCss.cardContainer}>
 			<View style={[row, items_center, justify_between]}>
 				{/* Left Items */}
 				<StackedAvatars />
@@ -47,8 +48,8 @@ const UserInfoCard: FC<UserInfoCardProps> = ({ onShowProjectDetail }) => {
 				<Image source={userImg} width={74} height={74} style={{ borderRadius: 24 }} />
 
 				<View>
-					<Text style={css.smallUserHeading}>Ads Video Editor</Text>
-					<Text style={css.bigUserHeading}>First Project</Text>
+					<Text style={cardCss.smallUserHeading}>Ads Video Editor</Text>
+					<Text style={cardCss.bigUserHeading}>First Project</Text>
 				</View>
 			</View>
 
@@ -83,18 +84,18 @@ const UserInfoCard: FC<UserInfoCardProps> = ({ onShowProjectDetail }) => {
 				<View style={[row, items_center, justify_between, { gap: 8 }]}>
 					{/* Badges */}
 					<View style={[row, items_center, { gap: 6 }]}>
-						<View style={css.badgeView}>
-							<Image source={messageImg} style={css.badgeImg} />
-							<Text style={css.badgeText}>2</Text>
+						<View style={cardCss.badgeView}>
+							<Image source={messageImg} style={cardCss.badgeImg} />
+							<Text style={cardCss.badgeText}>2</Text>
 						</View>
-						<View style={css.badgeView}>
-							<Image source={calendarImg} style={css.badgeImg} />
-							<Text style={css.badgeText}>30 Mar : 2023</Text>
+						<View style={cardCss.badgeView}>
+							<Image source={calendarImg} style={cardCss.badgeImg} />
+							<Text style={cardCss.badgeText}>30 Mar : 2023</Text>
 						</View>
 					</View>
 
-					<TouchableOpacity style={css.pendingBtnView}>
-						<Text style={css.pendingBtnText}>Pending</Text>
+					<TouchableOpacity style={cardCss.pendingBtnView}>
+						<Text style={cardCss.pendingBtnText}>Pending</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -102,7 +103,7 @@ const UserInfoCard: FC<UserInfoCardProps> = ({ onShowProjectDetail }) => {
 	);
 };
 
-const StackedAvatars = () => (
+export const StackedAvatars = () => (
 	<View style={[row, items_center, { gap: -12 }]}>
 		<Avatar size={36} title={"L S"} source={avatarPic3} borderColor={primary} borderWidth={2} />
 		<Avatar size={36} title={"L S"} source={avatarPic2} borderColor={primary} borderWidth={2} />
@@ -115,7 +116,7 @@ const StackedAvatars = () => (
 
 export default UserInfoCard;
 
-const css = StyleSheet.create({
+export const cardCss = StyleSheet.create({
 	cardContainer: {
 		padding: 24,
 		borderRadius: 32,
