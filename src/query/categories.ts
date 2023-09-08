@@ -23,6 +23,7 @@ const categoryList: { name: string; count: number }[] = [
 ];
 
 const getCategory = async () => {
+	/* Your server/api logic can go here in this code. It works well with Fetch and Axios*/
 	await delay(3000);
 
 	return categoryList;
