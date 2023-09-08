@@ -2,8 +2,7 @@ import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import type { ParamListBase } from "@react-navigation/native";
 import CollaboratorsPageView from "./view";
 import { useCallback, useState } from "react";
-
-const dummyData = Array.from({ length: 8 }, (_, num) => ({ id: `esther-howard-${num}`, name: "Esther Howard", email: "esther@gmail.com" }));
+import { dummyData } from "@/query/collborators";
 
 export default function CollaboratorsPage({}: BottomTabScreenProps<ParamListBase, string>) {
 	const [data, setData ] = useState(dummyData);

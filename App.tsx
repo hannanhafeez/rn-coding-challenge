@@ -1,7 +1,19 @@
 import "react-native-gesture-handler";
 import React from "react";
 // import TestPage from "@/screens/test.page";
+import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-query";
 import { NavigationContainer } from "@react-navigation/native";
+
+function onAppStateChange(status: AppStateStatus) {
+	// React Query already supports in web browser refetch on window focus by default
+	if (Platform.OS !== "web") {
+		focusManager.setFocused(status === "active");
+	}
+}
+
+const queryClient = new QueryClient({
+	defaultOptions: { queries: { retry: 2 } },
+});
 
 import AppLoading from "expo-app-loading";
 import {
@@ -35,8 +47,11 @@ import {
 	NotoSans_600SemiBold_Italic,
 } from "@expo-google-fonts/noto-sans";
 import TabNavigator from "@/navigation/TabNavigator";
+import { AppStateStatus, Platform } from "react-native";
+import { useAppState } from "@/hooks/useAppState";
 
 export default function App() {
+	useAppState(onAppStateChange);
 	const [fontsLoaded] = useFonts({
 		Poppins_100Thin,
 		Poppins_100Thin_Italic,
@@ -70,8 +85,10 @@ export default function App() {
 	}
 
 	return (
-		<NavigationContainer>
-			<TabNavigator />
-		</NavigationContainer>
+		<QueryClientProvider client={queryClient}>
+			<NavigationContainer>
+				<TabNavigator />
+			</NavigationContainer>
+		</QueryClientProvider>
 	);
 }

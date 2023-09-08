@@ -4,6 +4,7 @@ import HomePageView from "./view";
 
 import dayjs from "dayjs";
 import { HOME_STACK_SCREEN_NAMES } from "@/navigation/HomeStackNavigator";
+import { useCategoryData } from "@/query/categories";
 
 // const homeImg = require('@/assets/navigation/home.png');
 
@@ -28,13 +29,23 @@ const categoryList: { name: string; count: number }[] = [
 	},
 ];
 
-export default function HomePage({navigation,}: StackScreenProps<ParamListBase, string>) {
+export default function HomePage({ navigation }: StackScreenProps<ParamListBase, string>) {
 	const timeText = dayjs().format("HH:mm");
 	const dayText = dayjs().format("dddd");
 
-	const onShowProjectDetail = (id?: string)=>{
-		navigation.navigate(HOME_STACK_SCREEN_NAMES.project_details)
-	}
+	const { data, isLoading, isError } = useCategoryData();
 
-	return <HomePageView categoryList={categoryList} timeText={timeText} dayText={dayText} onShowProjectDetail={onShowProjectDetail} />;
+	const onShowProjectDetail = (id?: string) => {
+		navigation.navigate(HOME_STACK_SCREEN_NAMES.project_details);
+	};
+
+	return (
+		<HomePageView
+			categoryList={data}
+			categoryListLoading={isLoading}
+			timeText={timeText}
+			dayText={dayText}
+			onShowProjectDetail={onShowProjectDetail}
+		/>
+	);
 }

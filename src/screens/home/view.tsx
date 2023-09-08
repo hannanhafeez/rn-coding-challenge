@@ -1,10 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MaskedView from "@react-native-masked-view/masked-view";
 
 import { flex_1, items_center, justify_between, place_center, row } from "@/constants/common";
-import { dark_bg, pink_text } from "@/constants/colors";
+import { dark_bg, pink_text, primary } from "@/constants/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Header from "@/components/Header";
 import { LinearGradient } from "expo-linear-gradient";
@@ -15,20 +15,27 @@ const searchOutlineImg = require("@/assets/pages/search-outlined.png");
 import IconButton from "@/components/IconButton";
 import UserInfoCard from "../../components/UserInfoCard";
 import { isAndroid } from "@/utils/platform";
-
-export type Category = { name: string; count: number };
+import { CategoryData } from "@/query/categories";
 
 type HomePageViewProps = {
 	timeText: string;
 	dayText: string;
-	categoryList?: Category[];
+	categoryList?: CategoryData[];
+	categoryListLoading?: boolean;
 	onSearchPressed?: () => void;
 	onShowProjectDetail?: (id?: string) => void;
 };
 
 const BOTTOM_BAR_HEIGHT = 80;
 
-export default function HomePageView({ timeText, dayText, categoryList, onSearchPressed, onShowProjectDetail }: HomePageViewProps) {
+export default function HomePageView({
+	timeText,
+	dayText,
+	categoryList,
+	categoryListLoading,
+	onSearchPressed,
+	onShowProjectDetail,
+}: HomePageViewProps) {
 	const { top, bottom } = useSafeAreaInsets();
 
 	const [seletedCategory, setSeletedCategory] = useState<string | null>(categoryList?.[0].name || null);
@@ -74,41 +81,51 @@ export default function HomePageView({ timeText, dayText, categoryList, onSearch
 						</IconButton>
 					</View>
 
-					{/* Category List View */}
-					{categoryList && (
-						<View style={{ marginHorizontal: -20 }}>
-							<FlatList
-								horizontal
-								data={categoryList}
-								renderItem={({ item: { name, count } }) => {
-									const selected = seletedCategory === name;
-									return (
-										<TouchableOpacity onPress={() => setSeletedCategory((cat) => (cat === name ? null : name))}>
-											<View style={[row, items_center, categoryCss.view, selected && categoryCss.view_active]}>
-												<Text style={[categoryCss.text, selected && { color: "white" }]}>{name}</Text>
-												<View
-													style={[
-														place_center,
-														categoryCss.badge_view,
-														selected && { backgroundColor: "#8150FF" },
-													]}
-												>
-													<Text style={[categoryCss.badge_text, selected && { color: "white" }]}>{count}</Text>
-												</View>
-											</View>
-										</TouchableOpacity>
-									);
-								}}
-								keyExtractor={(item) => item.name}
-								ListHeaderComponent={() => <View style={{ width: 20 }} />}
-								ListFooterComponent={() => <View style={{ width: 20 }} />}
-								ItemSeparatorComponent={() => <View style={{ width: 12 }} />}
-							/>
-						</View>
-					)}
+					{categoryListLoading ? (
+						<ActivityIndicator size={"small"} color={primary} />
+					) : (
+						<>
+							{/* Category List View */}
+							{categoryList && (
+								<View style={{ marginHorizontal: -20 }}>
+									<FlatList
+										horizontal
+										data={categoryList}
+										renderItem={({ item: { name, count } }) => {
+											const selected = seletedCategory === name;
+											return (
+												<TouchableOpacity onPress={() => setSeletedCategory((cat) => (cat === name ? null : name))}>
+													<View
+														style={[row, items_center, categoryCss.view, selected && categoryCss.view_active]}
+													>
+														<Text style={[categoryCss.text, selected && { color: "white" }]}>{name}</Text>
+														<View
+															style={[
+																place_center,
+																categoryCss.badge_view,
+																selected && { backgroundColor: "#8150FF" },
+															]}
+														>
+															<Text style={[categoryCss.badge_text, selected && { color: "white" }]}>
+																{count}
+															</Text>
+														</View>
+													</View>
+												</TouchableOpacity>
+											);
+										}}
+										keyExtractor={(item) => item.name}
+										ListHeaderComponent={() => <View style={{ width: 20 }} />}
+										ListFooterComponent={() => <View style={{ width: 20 }} />}
+										ItemSeparatorComponent={() => <View style={{ width: 12 }} />}
+									/>
+								</View>
+							)}
 
-					{/* <View style={{ height: 800, backgroundColor: "red" }}></View> */}
-					<UserInfoCard onShowProjectDetail={onShowProjectDetail} />
+							{/* <View style={{ height: 800, backgroundColor: "red" }}></View> */}
+							<UserInfoCard onShowProjectDetail={onShowProjectDetail} />
+						</>
+					)}
 				</View>
 			</ScrollView>
 

@@ -46,8 +46,6 @@ export default function CollaboratorsPageView({ collaboratorData, onDelete }: Co
 	const renderItem = ({ item: { name, email }, index }: { item: CollaboratorDataType; index: number }, onClick: () => void) => {
 		//
 		const closeRow = (index: number) => {
-			console.log("closerow");
-			console.log(rows.current?.[index],);
 			if (prevOpenedRow && prevOpenedRow !== rows.current?.[index]) {
 				prevOpenedRow.current?.close?.();
 			}

@@ -25,6 +25,7 @@ export default function Header({ canGoBack = false, onGoBack,onAddPredded, hideU
 		<View style={[row, items_center, css.container]}>
 			{/* Left Items */}
 			<View style={[flex_1, row, items_center, justify_start, css.minGap]}>
+				{/* Only shows the back button if the canGoBack prop is true */}
 				{canGoBack && (
 					<IconButton onPress={onGoBack} size={48} backgroundColor={BUTTON_BG}>
 						<Image source={arrowLeft} />
