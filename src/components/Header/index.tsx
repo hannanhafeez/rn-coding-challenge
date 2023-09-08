@@ -15,11 +15,12 @@ type HeaderProps = {
 	canGoBack?: boolean;
 	hideUsersNumber?: boolean;
 	onGoBack?: () => void;
+	onAddPredded?:()=>void;
 };
 
 const BUTTON_BG = "#2B2B2B";
 
-export default function Header({ canGoBack = false, onGoBack, hideUsersNumber=false, }: HeaderProps) {
+export default function Header({ canGoBack = false, onGoBack,onAddPredded, hideUsersNumber=false, }: HeaderProps) {
 	return (
 		<View style={[row, items_center, css.container]}>
 			{/* Left Items */}
@@ -32,7 +33,7 @@ export default function Header({ canGoBack = false, onGoBack, hideUsersNumber=fa
 
 				<StackedAvatars hideUsersNumber={hideUsersNumber} />
 
-				<IconButton size={40} backgroundColor={BUTTON_BG}>
+				<IconButton onPress={onAddPredded} size={40} backgroundColor={BUTTON_BG}>
 					<Image source={addImg} style={{ width: 22, aspectRatio: 1 }} />
 				</IconButton>
 			</View>

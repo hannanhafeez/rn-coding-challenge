@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Dimensions, FlatList, Image, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 
 import { flex_1, items_center, row } from "@/constants/common";
@@ -16,8 +16,9 @@ const trashImg = require("@/assets/pages/trash.png");
 import { isAndroid } from "@/utils/platform";
 import Avatar from "@/components/Avatar";
 import IconButton from "@/components/IconButton";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import AddCollaboratorModal from "./AddCollaboratorModal";
 
 type CollaboratorDataType = {
 	id: string;
@@ -31,13 +32,13 @@ type CollaboratorsPageViewProps = {
 	onSearchPressed?: () => void;
 };
 
-const dummyData = Array.from({ length: 8 }, (_, num) => ({ id: `esther-howard-${num}`, name: "Esther Howard", email: "esther@gmail.com" }));
-
 const BOTTOM_BAR_HEIGHT = 80;
 
 export default function CollaboratorsPageView({ collaboratorData, onDelete }: CollaboratorsPageViewProps) {
 	const { top, bottom } = useSafeAreaInsets();
 	const BOTTOM_CLEARANCE = Math.max(bottom, 20) + BOTTOM_BAR_HEIGHT;
+
+	const [show, setShow] = useState(false);
 
 	const rows = useRef<Array<any>>([]);
 	const prevOpenedRow = useRef<any>(null);
@@ -45,7 +46,8 @@ export default function CollaboratorsPageView({ collaboratorData, onDelete }: Co
 	const renderItem = ({ item: { name, email }, index }: { item: CollaboratorDataType; index: number }, onClick: () => void) => {
 		//
 		const closeRow = (index: number) => {
-			// console.log("closerow");
+			console.log("closerow");
+			console.log(rows.current?.[index],);
 			if (prevOpenedRow && prevOpenedRow !== rows.current?.[index]) {
 				prevOpenedRow.current?.close?.();
 			}
@@ -61,10 +63,10 @@ export default function CollaboratorsPageView({ collaboratorData, onDelete }: Co
 						alignItems: "center",
 						justifyContent: "center",
 						width: 70,
-						backgroundColor: 'red'
+						backgroundColor: "red",
 					}}
 				>
-					<Image source={trashImg}/>
+					<Image source={trashImg} />
 				</TouchableOpacity>
 			);
 		};
@@ -73,7 +75,7 @@ export default function CollaboratorsPageView({ collaboratorData, onDelete }: Co
 			<Swipeable
 				renderRightActions={(progress, dragX) => renderRightActions(onClick)}
 				onSwipeableOpen={() => closeRow(index)}
-				ref={(ref) => (rows.current[index] = ref)}
+				ref={(ref) => rows.current[index] = ref}
 				//@ts-ignore
 				rightOpenValue={-100}
 			>
@@ -93,53 +95,65 @@ export default function CollaboratorsPageView({ collaboratorData, onDelete }: Co
 	};
 
 	return (
-		<GestureHandlerRootView style={{ flex: 1 }}>
-			<View style={[flex_1, css.container]}>
-				<View style={[{ paddingTop: top + 12 }]}>
-					<Header hideUsersNumber />
+		<>
+			<GestureHandlerRootView style={{ flex: 1 }}>
+				<View style={[flex_1, css.container]}>
+					<View style={[{ paddingTop: top + 12 }]}>
+						<Header hideUsersNumber onAddPredded={() => setShow(true)} />
+					</View>
+
+					{/* Input Contaier */}
+					<View
+						style={[
+							row,
+							items_center,
+							{
+								marginTop: 28,
+								marginBottom: 8,
+								borderColor: BORDER_COLOR,
+								borderWidth: 1,
+								borderRadius: 25,
+								gap: 8,
+								padding: 16,
+							},
+						]}
+					>
+						<Image source={searchOutlineImg} tintColor={INPUT_TEXT_COLOR} />
+
+						<TextInput
+							style={[flex_1, css.input]}
+							placeholder={"Search for collaborater"}
+							placeholderTextColor={INPUT_TEXT_COLOR}
+							clearButtonMode={"always"}
+						/>
+					</View>
+
+					<View style={{ flex: 1, marginHorizontal: -20 }}>
+						<FlatList
+							data={collaboratorData}
+							renderItem={(v) =>
+								renderItem(v, () => {
+									// console.log("Pressed", v);
+									onDelete?.(v.item.id);
+								})
+							}
+							ItemSeparatorComponent={() => (
+								<View style={{ paddingHorizontal: 20 }}>
+									<View style={{ height: 1, flex: 1, backgroundColor: "whitrgba(255, 255, 255, 0.04);e" }} />
+								</View>
+							)}
+							ListHeaderComponent={() => <View style={{ height: 4 }} />}
+							ListFooterComponent={() => <View style={{ height: BOTTOM_CLEARANCE }} />}
+							keyExtractor={(item) => item.id}
+						/>
+					</View>
+
+					<StatusBar style="light" />
 				</View>
+			</GestureHandlerRootView>
 
-				{/* Input Contaier */}
-				<View
-					style={[
-						row,
-						items_center,
-						{ marginTop: 28, marginBottom: 8, borderColor: BORDER_COLOR, borderWidth: 1, borderRadius: 25, gap: 8, padding: 16 },
-					]}
-				>
-					<Image source={searchOutlineImg} tintColor={INPUT_TEXT_COLOR} />
-
-					<TextInput
-						style={[flex_1, css.input]}
-						placeholder={"Search for collaborater"}
-						placeholderTextColor={INPUT_TEXT_COLOR}
-						clearButtonMode={"always"}
-					/>
-				</View>
-
-				<View style={{ flex: 1, marginHorizontal: -20 }}>
-					<FlatList
-						data={collaboratorData}
-						renderItem={(v) =>
-							renderItem(v, () => {
-								// console.log("Pressed", v);
-								onDelete?.(v.item.id);
-							})
-						}
-						ItemSeparatorComponent={() => (
-							<View style={{ paddingHorizontal: 20 }}>
-								<View style={{ height: 1, flex: 1, backgroundColor: "whitrgba(255, 255, 255, 0.04);e" }} />
-							</View>
-						)}
-						ListHeaderComponent={() => <View style={{ height: 4 }} />}
-						ListFooterComponent={() => <View style={{ height: BOTTOM_CLEARANCE }} />}
-						keyExtractor={(item) => item.id}
-					/>
-				</View>
-
-				<StatusBar style="light" />
-			</View>
-		</GestureHandlerRootView>
+			<AddCollaboratorModal show={show} setShow={setShow} />
+		</>
 	);
 }
 
