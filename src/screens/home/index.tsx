@@ -1,5 +1,5 @@
 import type { StackScreenProps } from "@react-navigation/stack";
-import type { ParamListBase } from "@react-navigation/native";
+import { type ParamListBase } from "@react-navigation/native";
 import HomePageView from "./view";
 
 import dayjs from "dayjs";

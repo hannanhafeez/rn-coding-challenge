@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import { FlatList, Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import Swipeable from "react-native-gesture-handler/Swipeable";
 
 import { flex_1, items_center, row } from "@/constants/common";
 import { dark_bg } from "@/constants/colors";
@@ -10,12 +11,23 @@ import { poppins_Medium, poppins_Regular } from "@/constants/fonts";
 const searchOutlineImg = require("@/assets/pages/search-outlined.png");
 const avatarPic2 = require("@/assets/pages/profile2.png");
 const moreImg = require("@/assets/pages/more.png");
+const trashImg = require("@/assets/pages/trash.png");
 
 import { isAndroid } from "@/utils/platform";
 import Avatar from "@/components/Avatar";
 import IconButton from "@/components/IconButton";
+import { useRef } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+type CollaboratorDataType = {
+	id: string;
+	name: string;
+	email: string;
+};
 
 type CollaboratorsPageViewProps = {
+	collaboratorData?: CollaboratorDataType[];
+	onDelete?: (id: string) => void;
 	onSearchPressed?: () => void;
 };
 
@@ -23,59 +35,111 @@ const dummyData = Array.from({ length: 8 }, (_, num) => ({ id: `esther-howard-${
 
 const BOTTOM_BAR_HEIGHT = 80;
 
-export default function CollaboratorsPageView({}: CollaboratorsPageViewProps) {
+export default function CollaboratorsPageView({ collaboratorData, onDelete }: CollaboratorsPageViewProps) {
 	const { top, bottom } = useSafeAreaInsets();
 	const BOTTOM_CLEARANCE = Math.max(bottom, 20) + BOTTOM_BAR_HEIGHT;
 
-	return (
-		<View style={[flex_1, css.container]}>
-			<View style={[{ paddingTop: top + 12 }]}>
-				<Header hideUsersNumber />
-			</View>
+	const rows = useRef<Array<any>>([]);
+	const prevOpenedRow = useRef<any>(null);
 
-			{/* Input Contaier */}
-			<View
-				style={[
-					row,
-					items_center,
-					{ marginTop: 28, borderColor: BORDER_COLOR, borderWidth: 1, borderRadius: 25, gap: 8, padding: 16 },
-				]}
+	const renderItem = ({ item: { name, email }, index }: { item: CollaboratorDataType; index: number }, onClick: () => void) => {
+		//
+		const closeRow = (index: number) => {
+			// console.log("closerow");
+			if (prevOpenedRow && prevOpenedRow !== rows.current?.[index]) {
+				prevOpenedRow.current?.close?.();
+			}
+			prevOpenedRow.current = rows.current?.[index];
+		};
+
+		const renderRightActions = (onClick: () => void) => {
+			return (
+				<TouchableOpacity
+					onPress={onClick}
+					style={{
+						margin: 0,
+						alignItems: "center",
+						justifyContent: "center",
+						width: 70,
+						backgroundColor: 'red'
+					}}
+				>
+					<Image source={trashImg}/>
+				</TouchableOpacity>
+			);
+		};
+
+		return (
+			<Swipeable
+				renderRightActions={(progress, dragX) => renderRightActions(onClick)}
+				onSwipeableOpen={() => closeRow(index)}
+				ref={(ref) => (rows.current[index] = ref)}
+				//@ts-ignore
+				rightOpenValue={-100}
 			>
-				<Image source={searchOutlineImg} tintColor={INPUT_TEXT_COLOR} />
+				<View style={[row, items_center, { backgroundColor: dark_bg, paddingVertical: 24, paddingHorizontal: 20, gap: 14 }]}>
+					<Avatar size={56} title={"L S"} source={avatarPic2} />
+					<View style={[flex_1, { gap: 2 }]}>
+						<Text style={css.userHeading}>{name}</Text>
+						<Text style={css.userSubHeading}>{email}</Text>
+					</View>
 
-				<TextInput
-					style={[flex_1, css.input]}
-					placeholder={"Search for collaborater"}
-					placeholderTextColor={INPUT_TEXT_COLOR}
-					clearButtonMode={"always"}
-				/>
-			</View>
+					<IconButton size={36} backgroundColor={"rgba(205, 205, 205, 0.2)"}>
+						<Image source={moreImg} style={{ width: 18, height: 18 }} />
+					</IconButton>
+				</View>
+			</Swipeable>
+		);
+	};
 
-			<FlatList
-				data={dummyData}
-				renderItem={({ item: { name, email } }) => {
-					return (
-						<View style={[row, items_center, { paddingVertical: 24, gap: 14 }]}>
-							<Avatar size={56} title={"L S"} source={avatarPic2} />
-							<View style={[flex_1, { gap: 2 }]}>
-								<Text style={css.userHeading}>{name}</Text>
-								<Text style={css.userSubHeading}>{email}</Text>
+	return (
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<View style={[flex_1, css.container]}>
+				<View style={[{ paddingTop: top + 12 }]}>
+					<Header hideUsersNumber />
+				</View>
+
+				{/* Input Contaier */}
+				<View
+					style={[
+						row,
+						items_center,
+						{ marginTop: 28, marginBottom: 8, borderColor: BORDER_COLOR, borderWidth: 1, borderRadius: 25, gap: 8, padding: 16 },
+					]}
+				>
+					<Image source={searchOutlineImg} tintColor={INPUT_TEXT_COLOR} />
+
+					<TextInput
+						style={[flex_1, css.input]}
+						placeholder={"Search for collaborater"}
+						placeholderTextColor={INPUT_TEXT_COLOR}
+						clearButtonMode={"always"}
+					/>
+				</View>
+
+				<View style={{ flex: 1, marginHorizontal: -20 }}>
+					<FlatList
+						data={collaboratorData}
+						renderItem={(v) =>
+							renderItem(v, () => {
+								// console.log("Pressed", v);
+								onDelete?.(v.item.id);
+							})
+						}
+						ItemSeparatorComponent={() => (
+							<View style={{ paddingHorizontal: 20 }}>
+								<View style={{ height: 1, flex: 1, backgroundColor: "whitrgba(255, 255, 255, 0.04);e" }} />
 							</View>
+						)}
+						ListHeaderComponent={() => <View style={{ height: 4 }} />}
+						ListFooterComponent={() => <View style={{ height: BOTTOM_CLEARANCE }} />}
+						keyExtractor={(item) => item.id}
+					/>
+				</View>
 
-							<IconButton size={36} backgroundColor={"rgba(205, 205, 205, 0.2)"}>
-								<Image source={moreImg} style={{ width: 18, height: 18 }} />
-							</IconButton>
-						</View>
-					);
-				}}
-				ItemSeparatorComponent={() => <View style={{ height: 1, flex: 1, backgroundColor: "whitrgba(255, 255, 255, 0.04);e" }} />}
-				ListHeaderComponent={() => <View style={{ height: 12 }} />}
-				ListFooterComponent={() => <View style={{ height: BOTTOM_CLEARANCE }} />}
-				keyExtractor={(item) => item.id}
-			/>
-
-			<StatusBar style="light" />
-		</View>
+				<StatusBar style="light" />
+			</View>
+		</GestureHandlerRootView>
 	);
 }
 

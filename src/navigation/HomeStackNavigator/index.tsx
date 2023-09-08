@@ -12,11 +12,11 @@ export const HOME_STACK_SCREEN_NAMES = {
 }
 
 export default function HomeStack({navigation, route}: BottomTabScreenProps<ParamListBase, string>) {
+
 	return (
 		<Stack.Navigator initialRouteName={HOME_STACK_SCREEN_NAMES.home} screenOptions={{ headerShown: false }}>
 			<Stack.Screen name={HOME_STACK_SCREEN_NAMES.home} component={HomePage} />
 			<Stack.Screen name={HOME_STACK_SCREEN_NAMES.project_details} component={ProjectDetailsPage} />
-			{/* <Stack.Screen name="Settings" component={Settings} /> */}
 		</Stack.Navigator>
 	);
 }
