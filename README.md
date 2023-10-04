@@ -1,10 +1,10 @@
-Hi, My name is Abdul Hannan & this project is created as a coding challenge.
+Hi, I am Abdul Hannan & this project was created as a coding challenge.
 
 This project was bootstrapped with [Create React Native Expo App  (Managed)](https://docs.expo.dev/).
 
 This project uses [React Navigation](https://reactnavigation.org/), and specifically [Bottom Tab Navigator](https://reactnavigation.org/docs/bottom-tab-navigator) to achieve the hovering bottom tab navigation menu in the given design.
 
-After cloning the repository, navigate to the root folder of the project using a terminal or command prompt and run the following command (I recommend using npm for this specific project).
+After cloning the repository, navigate to the project's root folder using a terminal or command prompt and run the following command (I recommend using npm for this specific project).
 
 ```
 npm install
